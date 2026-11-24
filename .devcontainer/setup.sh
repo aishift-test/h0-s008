@@ -46,7 +46,8 @@ s.model = e.HK_MODEL;
 s.permissions = Object.assign(s.permissions || {}, { defaultMode: "acceptEdits" });
 const allow = ["Bash", "Read(//tmp/**)", "Edit(//tmp/**)", "Write(//tmp/**)", "WebFetch", "WebSearch"];
 s.permissions.allow = Array.from(new Set([...(s.permissions.allow || []), ...allow]));
-s.skipAutoPermissionPrompt = true; // hides the "Make auto mode your default?" question
+s.skipAutoPermissionPrompt = true;
+s.permissions.disableAutoMode = "disable"; // no "Make auto mode your default?" question, and no auto-mode check
 s.statusLine = { type: "command", command: "bash " + path.join(e.HK_WS, ".devcontainer", "status.sh") };
 // Partial hardening: keep Claude from reading the key it runs on (settings file and environment).
 const deny = ["Read(~/.claude/**)", "Read(~/.claude.json)", "Bash(env)", "Bash(env *)", "Bash(printenv)", "Bash(printenv *)", "Bash(*~/.claude*)", "Bash(*$HOME/.claude*)", "Bash(*OPENROUTER_API_KEY*)", "Bash(*ANTHROPIC_AUTH_TOKEN*)"];
