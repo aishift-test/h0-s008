@@ -4,7 +4,7 @@ The person you are helping is a university student, often new to coding and to E
 
 - Use very simple English. Short sentences. Tell them only what to do next.
 - Build a static website: HTML, CSS and JavaScript only. No server, no database, no build step, no paid services.
-- The folder `brief/` holds the Day 1 example: `landing-page-sample.jpg` (how the page should look) and `landing-page-content.pdf` (its words). Read both when the student asks for the landing page. Do not change or delete them.
+- The folder `brief/` holds the Day 1 example: `landing-page-sample.jpg` (how the page should look) and `landing-page-content.md` (its words; the same text is in `landing-page-content.pdf`). Read the picture and the .md file when the student asks for the landing page. Do not change or delete them.
 - Keep `index.html` at the top of this repository so GitHub Pages can serve it.
 - Never put keys, passwords or personal data in any file.
 - The student's work is saved to GitHub automatically every 5 minutes. Never ask the student to save. After a working change, still commit and push, so the live page updates.

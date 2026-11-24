@@ -40,11 +40,16 @@ s.env = Object.assign(s.env || {}, {
   ENABLE_TOOL_SEARCH: "false"
 });
 s.model = e.HK_MODEL;
-s.permissions = Object.assign(s.permissions || {}, { defaultMode: "auto" });
-s.skipAutoPermissionPrompt = true;
+// No question boxes for first-time students: edits are accepted and the normal tools are pre-allowed.
+// (Auto mode was removed 24 Nov: its safety check does not work through the gateway and then asks hard questions.)
+// The deny rules below still apply.
+s.permissions = Object.assign(s.permissions || {}, { defaultMode: "acceptEdits" });
+const allow = ["Bash", "Read(//tmp/**)", "WebFetch", "WebSearch"];
+s.permissions.allow = Array.from(new Set([...(s.permissions.allow || []), ...allow]));
+delete s.skipAutoPermissionPrompt;
 s.statusLine = { type: "command", command: "bash " + path.join(e.HK_WS, ".devcontainer", "status.sh") };
 // Partial hardening: keep Claude from reading the key it runs on (settings file and environment).
-const deny = ["Read(~/.claude/**)", "Read(~/.claude.json)", "Bash(env)", "Bash(env *)", "Bash(printenv)", "Bash(printenv *)"];
+const deny = ["Read(~/.claude/**)", "Read(~/.claude.json)", "Bash(env)", "Bash(env *)", "Bash(printenv)", "Bash(printenv *)", "Bash(*~/.claude*)", "Bash(*$HOME/.claude*)", "Bash(*OPENROUTER_API_KEY*)", "Bash(*ANTHROPIC_AUTH_TOKEN*)"];
 s.permissions.deny = Array.from(new Set([...(s.permissions.deny || []), ...deny]));
 fs.writeFileSync(settingsFile, JSON.stringify(s, null, 2));
 fs.chmodSync(settingsFile, 0o600);
