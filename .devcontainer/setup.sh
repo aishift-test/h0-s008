@@ -44,9 +44,9 @@ s.model = e.HK_MODEL;
 // (Auto mode was removed 24 Nov: its safety check does not work through the gateway and then asks hard questions.)
 // The deny rules below still apply.
 s.permissions = Object.assign(s.permissions || {}, { defaultMode: "acceptEdits" });
-const allow = ["Bash", "Read(//tmp/**)", "WebFetch", "WebSearch"];
+const allow = ["Bash", "Read(//tmp/**)", "Edit(//tmp/**)", "Write(//tmp/**)", "WebFetch", "WebSearch"];
 s.permissions.allow = Array.from(new Set([...(s.permissions.allow || []), ...allow]));
-delete s.skipAutoPermissionPrompt;
+s.skipAutoPermissionPrompt = true; // hides the "Make auto mode your default?" question
 s.statusLine = { type: "command", command: "bash " + path.join(e.HK_WS, ".devcontainer", "status.sh") };
 // Partial hardening: keep Claude from reading the key it runs on (settings file and environment).
 const deny = ["Read(~/.claude/**)", "Read(~/.claude.json)", "Bash(env)", "Bash(env *)", "Bash(printenv)", "Bash(printenv *)", "Bash(*~/.claude*)", "Bash(*$HOME/.claude*)", "Bash(*OPENROUTER_API_KEY*)", "Bash(*ANTHROPIC_AUTH_TOKEN*)"];
@@ -59,6 +59,7 @@ const stateFile = e.HK_CFG === path.join(e.HK_HOME, ".claude")
 let j = {};
 try { j = JSON.parse(fs.readFileSync(stateFile, "utf8")); } catch (_) {}
 j.hasCompletedOnboarding = true;
+j.diffTool = "terminal"; // show file changes in the terminal, not as a separate editor tab
 j.projects = j.projects || {};
 j.projects[e.HK_WS] = Object.assign(j.projects[e.HK_WS] || {}, { hasTrustDialogAccepted: true });
 fs.writeFileSync(stateFile, JSON.stringify(j, null, 2));
